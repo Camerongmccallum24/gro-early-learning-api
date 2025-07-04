@@ -2,6 +2,11 @@
 
 A modern, full-stack Applicant Tracking System built with Next.js (Frontend) and Node.js/Express (Backend).
 
+## 🚀 Deployment Status
+- ✅ Repository: https://github.com/Camerongmccallum24/gro-early-learning-api
+- ✅ Frontend: Configured for Vercel deployment with root directory `frontend/`
+- ✅ Build: TailwindCSS dependencies resolved
+
 ## 🏗️ Project Structure
 
 ```
@@ -129,13 +134,3 @@ The backend includes a seeding script that creates:
 ### Frontend (Vercel/Netlify)
 1. Connect your repository
 2. Set build command: `cd frontend && npm run build`
-3. Set output directory: `frontend/.next`
-
-### Backend (Railway/Heroku)
-1. Set environment variables
-2. Use `backend/package.json` as entry point
-3. Ensure MongoDB Atlas connection
-
-## 📄 License
-
-MIT License - see LICENSE file for details
