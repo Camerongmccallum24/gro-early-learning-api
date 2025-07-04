@@ -34,6 +34,8 @@ const corsOptions = {
     const allowedOrigins = [
       process.env.FRONTEND_URL || 'http://localhost:3000',
       'https://gro-early-learning.vercel.app',
+      'https://gro-early-learning-git-main-camerongmccallum24s-projects.vercel.app',
+      'https://gro-early-learning-en3cbbnb5-camerongmccallum24s-projects.vercel.app',
       'http://localhost:3000',
       'http://127.0.0.1:3000'
     ];
