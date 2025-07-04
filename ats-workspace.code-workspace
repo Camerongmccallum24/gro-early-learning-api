@@ -1,0 +1,141 @@
+{
+  "folders": [
+    {
+      "name": "🎨 Frontend (Next.js)",
+      "path": "./frontend"
+    },
+    {
+      "name": "⚙️ Backend (Express API)",
+      "path": "./backend"
+    },
+    {
+      "name": "📄 Root (Documentation)",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/dist": true,
+      "**/.git": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/dist": true
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "package.json": "package-lock.json,yarn.lock,pnpm-lock.yaml",
+      "tsconfig.json": "tsconfig.*.json",
+      "next.config.*": "next-env.d.ts",
+      ".env.example": ".env,.env.*",
+      "tailwind.config.*": "postcss.config.*"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "bradlc.vscode-tailwindcss",
+      "ms-vscode.vscode-typescript-next",
+      "ms-vscode.vscode-json",
+      "ms-vscode.vscode-node-debug2",
+      "formulahendry.auto-rename-tag",
+      "christian-kohler.path-intellisense"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🎨 Frontend Dev Server",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/frontend/node_modules/.bin/next",
+        "args": ["dev"],
+        "cwd": "${workspaceFolder}/frontend",
+        "console": "integratedTerminal",
+        "env": {
+          "NODE_ENV": "development"
+        }
+      },
+      {
+        "name": "⚙️ Backend API Server",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/backend/src/app.js",
+        "cwd": "${workspaceFolder}/backend",
+        "console": "integratedTerminal",
+        "env": {
+          "NODE_ENV": "development"
+        },
+        "envFile": "${workspaceFolder}/backend/.env"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "🚀 Full Stack (Frontend + Backend)",
+        "configurations": ["🎨 Frontend Dev Server", "⚙️ Backend API Server"],
+        "stopAll": true
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Install Frontend Dependencies",
+        "type": "shell",
+        "command": "npm install",
+        "options": {
+          "cwd": "${workspaceFolder}/frontend"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        }
+      },
+      {
+        "label": "Install Backend Dependencies", 
+        "type": "shell",
+        "command": "npm install",
+        "options": {
+          "cwd": "${workspaceFolder}/backend"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        }
+      },
+      {
+        "label": "Seed Database",
+        "type": "shell",
+        "command": "npm run seed",
+        "options": {
+          "cwd": "${workspaceFolder}/backend"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        }
+      }
+    ]
+  }
+} 

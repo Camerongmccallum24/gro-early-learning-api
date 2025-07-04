@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-gro-teal: #00A8B5;
+    --color-gro-orange: #F28C38;
+    --color-gro-green: #4CAF50;
+    --color-gro-blue: #2196F3;
+    --color-gro-darkblue: #1F2937;
+    --color-gro-gray: #6B7280;
+    --color-gro-lightgray: #F3F4F6;
+    --color-gro-darkgray: #1F2937;
+    --color-gro-mount-isa: #F79939;
+    --color-gro-moranbah: #8DC63F;
+    --color-gro-charters-towers: #80CAE5;
+    --foreground: #171717;
+    --background: #ffffff;
+    --muted: #6B7280;
+    --muted-foreground: #9CA3AF;
+  }
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: var(--font-nunito), Arial, sans-serif;
+  }
+  /* Typography Scale */
+  h1, .h1 {
+    @apply font-heading text-4xl font-bold;
+  }
+  h2, .h2 {
+    @apply font-heading text-3xl font-semibold;
+  }
+  h3, .h3 {
+    @apply font-heading text-2xl font-semibold;
+  }
+  h4, .h4 {
+    @apply font-heading text-xl font-semibold;
+  }
+  h5, .h5 {
+    @apply font-heading text-lg font-semibold;
+  }
+  h6, .h6 {
+    @apply font-heading text-base font-semibold;
+  }
+  /* Body Text */
+  .body-lg {
+    @apply font-body text-lg;
+  }
+  .body-base {
+    @apply font-body text-base;
+  }
+  .body-sm {
+    @apply font-body text-sm;
+  }
+  .body-xs {
+    @apply font-body text-xs;
+  }
+}
+
+@layer components {
+  .btn-gro-teal {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gro-teal rounded-md hover:bg-gro-teal hover:opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gro-teal focus:ring-offset-2;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-gro-darkblue bg-transparent border-2 border-current rounded-md hover:bg-gro-darkblue hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gro-darkblue focus:ring-offset-2;
+  }
+  .btn-touch {
+    @apply px-6 py-3 text-sm font-medium rounded-md transition-all duration-200;
+  }
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-gro-teal focus:ring-offset-2;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-nunito), Arial, sans-serif;
+}
