@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { apiClient } from '@/lib/api';
-import type { Job } from '@/lib/api';
+import { mockApiClient } from '@/data/mockJobsData';
+import type { Job } from '@/data/mockJobsData';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,8 +27,8 @@ export default function JobsPage() {
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.getJobs(filters);
-      
+      const response = await mockApiClient.getJobs(filters);
+
       if (response.status === 'success' && response.data && response.data.jobs) {
         setJobs(Array.isArray(response.data.jobs) ? response.data.jobs : []);
       } else {
@@ -69,11 +69,11 @@ export default function JobsPage() {
 
   const formatSalary = (job: Job) => {
     if (!job?.salary?.showRange) return 'Competitive';
-    
+
     const { min, max, currency, period } = job.salary;
-    const formatAmount = (amount: number) => 
-      new Intl.NumberFormat('en-AU', { 
-        style: 'currency', 
+    const formatAmount = (amount: number) =>
+      new Intl.NumberFormat('en-AU', {
+        style: 'currency',
         currency: currency || 'AUD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
@@ -84,7 +84,7 @@ export default function JobsPage() {
     } else if (min) {
       return `${formatAmount(min)}+ ${period || 'annually'}`;
     }
-    
+
     return 'Competitive';
   };
 
@@ -136,7 +136,7 @@ export default function JobsPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-gro-teal/10 to-gro-green/10 py-16">
@@ -146,10 +146,10 @@ export default function JobsPage() {
                 Current Career Opportunities
               </h1>
               <p className="text-lg sm:text-xl text-gro-gray leading-relaxed mb-8">
-                Join our passionate team across Queensland's mining communities and make a meaningful 
+                Join our passionate team across Queensland's mining communities and make a meaningful
                 impact in early childhood education.
               </p>
-              
+
               {/* Search and Filters */}
               <div className="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -163,7 +163,7 @@ export default function JobsPage() {
                       className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gro-teal focus:border-transparent"
                     />
                   </div>
-                  
+
                   <select
                     value={filters.location}
                     onChange={(e) => handleFilterChange('location', e.target.value)}
@@ -174,7 +174,7 @@ export default function JobsPage() {
                     <option value="Moranbah">Moranbah</option>
                     <option value="Charters Towers">Charters Towers</option>
                   </select>
-                  
+
                   <select
                     value={filters.type}
                     onChange={(e) => handleFilterChange('type', e.target.value)}
@@ -185,7 +185,7 @@ export default function JobsPage() {
                     <option value="part-time">Part-time</option>
                     <option value="contract">Contract</option>
                   </select>
-                  
+
                   <Button onClick={applyFilters} className="w-full" variant="gro">
                     <Filter className="h-4 w-4 mr-2" />
                     Filter Jobs
@@ -228,35 +228,35 @@ export default function JobsPage() {
                             </span>
                           )}
                         </div>
-                        
+
                         <div className="flex flex-wrap gap-2">
                           <span className={`inline-flex items-center text-xs font-medium px-2 py-1 rounded-full border ${getLocationBadgeClasses(job.location?.city || '')}`}>
                             <MapPin className="h-3 w-3 mr-1" />
                             {job.location?.city}, {job.location?.state}
                           </span>
-                          
+
                           <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded-full">
                             {job.employment?.type}
                           </span>
                         </div>
                       </CardHeader>
-                      
+
                       <CardContent className="space-y-4">
                         <p className="text-gray-600 text-sm line-clamp-3">
                           {job.summary || job.description.substring(0, 150) + '...'}
                         </p>
-                        
+
                         <div className="space-y-2 text-sm text-gray-600">
                           <div className="flex items-center">
                             <DollarSign className="h-4 w-4 mr-2 text-gro-teal" />
                             <span>{formatSalary(job)}</span>
                           </div>
-                          
+
                           <div className="flex items-center">
                             <Briefcase className="h-4 w-4 mr-2 text-gro-teal" />
                             <span>{job.experience?.level} level ({job.experience?.min}+ years)</span>
                           </div>
-                          
+
                           {job.applicationDeadline && (
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-2 text-gro-orange" />
@@ -266,7 +266,7 @@ export default function JobsPage() {
                             </div>
                           )}
                         </div>
-                        
+
                         <div className="flex flex-wrap gap-1 mt-4">
                           {job.skills?.required?.slice(0, 3)?.map((skill, index) => (
                             <span key={index} className="bg-gro-teal/10 text-gro-teal text-xs px-2 py-1 rounded">
@@ -279,7 +279,7 @@ export default function JobsPage() {
                             </span>
                           )}
                         </div>
-                        
+
                         <div className="pt-4">
                           <Button asChild className="w-full" variant="gro">
                             <Link href={`/jobs/${job._id}`}>
@@ -303,7 +303,7 @@ export default function JobsPage() {
               Ready to Start Your Career Journey?
             </h2>
             <p className="text-lg text-gro-gray mb-8 max-w-2xl mx-auto">
-              Join our team and make a meaningful difference in early childhood education 
+              Join our team and make a meaningful difference in early childhood education
               while enjoying competitive benefits and career growth opportunities.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -317,7 +317,7 @@ export default function JobsPage() {
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { apiClient } from '@/lib/api';
-import type { Job } from '@/lib/api';
+import { mockApiClient } from '@/data/mockJobsData';
+import type { Job } from '@/data/mockJobsData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/Button';
 import { MapPin, DollarSign, Briefcase, Clock, Users } from 'lucide-react';
@@ -24,7 +24,7 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      
+
       // Map location IDs to city names for API filtering
       const locationCityMap: Record<string, string> = {
         'mount-isa': 'Mount Isa',
@@ -33,11 +33,11 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
       };
 
       const cityName = locationCityMap[location] || location;
-      
-      const response = await apiClient.getJobs({
+
+      const response = await mockApiClient.getJobs({
         location: cityName
       });
-      
+
       if (response.status === 'success' && response.data) {
         setJobs(response.data.jobs);
       } else {
@@ -52,11 +52,11 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
 
   const formatSalary = (job: Job) => {
     if (!job.salary.showRange) return 'Competitive Package';
-    
+
     const { min, max, currency, period } = job.salary;
-    const formatAmount = (amount: number) => 
-      new Intl.NumberFormat('en-AU', { 
-        style: 'currency', 
+    const formatAmount = (amount: number) =>
+      new Intl.NumberFormat('en-AU', {
+        style: 'currency',
         currency: currency || 'AUD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
@@ -67,7 +67,7 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
     } else if (min) {
       return `${formatAmount(min)}+ ${period}`;
     }
-    
+
     return 'Competitive Package';
   };
 
@@ -147,39 +147,39 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
                   </span>
                 )}
               </div>
-              
+
               <div className="flex flex-wrap gap-2">
                 <span className={`inline-flex items-center text-xs font-medium px-2 py-1 rounded-full bg-gray-100 ${getLocationColor(location)}`}>
                   <MapPin className="h-3 w-3 mr-1" />
                   {job.location.city}
                 </span>
-                
+
                 <span className="bg-gro-teal/10 text-gro-teal text-xs font-medium px-2 py-1 rounded-full">
                   {job.employment.type}
                 </span>
-                
+
                 <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
                   {job.experience.level} level
                 </span>
               </div>
             </CardHeader>
-            
+
             <CardContent className="space-y-4">
               <p className="text-gray-600 text-sm leading-relaxed">
                 {job.summary || job.description.substring(0, 120) + '...'}
               </p>
-              
+
               <div className="space-y-2 text-sm">
                 <div className="flex items-center text-gray-600">
                   <DollarSign className="h-4 w-4 mr-2 text-gro-teal" />
                   <span className="font-medium">{formatSalary(job)}</span>
                 </div>
-                
+
                 <div className="flex items-center text-gray-600">
                   <Briefcase className="h-4 w-4 mr-2 text-gro-teal" />
                   <span>{job.experience.min}+ years experience required</span>
                 </div>
-                
+
                 {job.applicationDeadline && (
                   <div className="flex items-center text-gray-600">
                     <Clock className="h-4 w-4 mr-2 text-gro-orange" />
@@ -189,7 +189,7 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
                   </div>
                 )}
               </div>
-              
+
               {/* Key Requirements */}
               <div className="space-y-2">
                 <h4 className="text-sm font-semibold text-gray-800">Key Requirements:</h4>
@@ -206,7 +206,7 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
                   )}
                 </div>
               </div>
-              
+
               {/* Benefits Preview */}
               {job.benefits && job.benefits.length > 0 && (
                 <div className="space-y-2">
@@ -224,7 +224,7 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
                   </div>
                 </div>
               )}
-              
+
               <div className="pt-4 flex gap-3">
                 <Button asChild className="flex-1" variant="gro">
                   <Link href={`/jobs/${job._id}`}>
@@ -241,7 +241,7 @@ const LocationJobBoard: React.FC<LocationJobBoardProps> = ({ location }) => {
           </Card>
         ))}
       </div>
-      
+
       {/* View All Jobs Link */}
       <div className="text-center pt-6">
         <Button asChild variant="outline" size="lg">

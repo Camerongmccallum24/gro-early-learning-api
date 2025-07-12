@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { apiClient, isAuthenticated } from '@/lib/api';
-import type { Job } from '@/lib/api';
+import { mockApiClient, isAuthenticated } from '@/data/mockJobsData';
+import type { Job } from '@/data/mockJobsData';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ApplicationModal from '@/components/ApplicationModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/Button';
-import { 
-  MapPin, 
-  Clock, 
-  DollarSign, 
-  Briefcase, 
+import {
+  MapPin,
+  Clock,
+  DollarSign,
+  Briefcase,
   Calendar,
   Building,
   Users,
@@ -29,7 +29,7 @@ export default function JobDetailPage() {
   const params = useParams();
   const router = useRouter();
   const jobId = params.id as string;
-  
+
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,8 +45,8 @@ export default function JobDetailPage() {
   const fetchJob = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.getJob(jobId);
-      
+      const response = await mockApiClient.getJob(jobId);
+
       if (response.status === 'success' && response.data) {
         setJob(response.data);
       } else {
@@ -87,11 +87,11 @@ export default function JobDetailPage() {
 
   const formatSalary = (job: Job) => {
     if (!job?.salary?.showRange) return 'Competitive';
-    
+
     const { min, max, currency, period } = job.salary;
-    const formatAmount = (amount: number) => 
-      new Intl.NumberFormat('en-AU', { 
-        style: 'currency', 
+    const formatAmount = (amount: number) =>
+      new Intl.NumberFormat('en-AU', {
+        style: 'currency',
         currency: currency || 'AUD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
@@ -102,7 +102,7 @@ export default function JobDetailPage() {
     } else if (min) {
       return `${formatAmount(min)}+ ${period || 'annually'}`;
     }
-    
+
     return 'Competitive';
   };
 
@@ -112,7 +112,7 @@ export default function JobDetailPage() {
       router.push(`/auth/login?returnUrl=/jobs/${jobId}`);
       return;
     }
-    
+
     setShowApplicationModal(true);
   };
 
@@ -161,7 +161,7 @@ export default function JobDetailPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-grow">
         {/* Breadcrumb & Back Button */}
         <section className="bg-gray-50 py-6">
@@ -196,7 +196,7 @@ export default function JobDetailPage() {
                       <MapPin className="h-4 w-4 mr-1" />
                       {job.location?.city}, {job.location?.state}
                     </span>
-                    
+
                     <span className="bg-gray-100 text-gray-800 text-sm font-medium px-3 py-1 rounded-full">
                       {job.employment?.type}
                     </span>
@@ -217,17 +217,17 @@ export default function JobDetailPage() {
                       <Building className="h-4 w-4 mr-2 text-gro-teal" />
                       <span>GRO Early Learning</span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <DollarSign className="h-4 w-4 mr-2 text-gro-teal" />
                       <span>{formatSalary(job)}</span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <Briefcase className="h-4 w-4 mr-2 text-gro-teal" />
                       <span>{job.experience?.level} level</span>
                     </div>
-                    
+
                     {job.applicationDeadline && (
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-2 text-gro-orange" />
@@ -257,16 +257,16 @@ export default function JobDetailPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <Button 
+                    <Button
                       onClick={handleApply}
                       disabled={applying}
-                      className="w-full" 
+                      className="w-full"
                       variant="gro"
                       size="lg"
                     >
                       {applying ? 'Processing...' : 'Apply Now'}
                     </Button>
-                    
+
                     <div className="text-center text-sm text-gray-600">
                       <p>Join our passionate team and make a difference in early childhood education!</p>
                     </div>
@@ -295,7 +295,7 @@ export default function JobDetailPage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-8">
-                
+
                 {/* Job Description */}
                 <Card>
                   <CardHeader>
@@ -380,7 +380,7 @@ export default function JobDetailPage() {
 
               {/* Sidebar */}
               <div className="lg:col-span-1 space-y-6">
-                
+
                 {/* Skills Required */}
                 {job.skills?.required && job.skills.required.length > 0 && (
                   <Card>
@@ -390,13 +390,12 @@ export default function JobDetailPage() {
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
                         {job.skills.required.map((skill, index) => (
-                          <span 
+                          <span
                             key={index}
-                            className={`inline-flex items-center text-xs font-medium px-2 py-1 rounded ${
-                              skill.priority === 'must-have' 
-                                ? 'bg-gro-teal/10 text-gro-teal border border-gro-teal/20' 
+                            className={`inline-flex items-center text-xs font-medium px-2 py-1 rounded ${skill.priority === 'must-have'
+                                ? 'bg-gro-teal/10 text-gro-teal border border-gro-teal/20'
                                 : 'bg-gray-100 text-gray-700 border border-gray-200'
-                            }`}
+                              }`}
                           >
                             {skill.name}
                             {skill.priority === 'must-have' && <Star className="h-3 w-3 ml-1" />}
@@ -470,14 +469,14 @@ export default function JobDetailPage() {
               Ready to Join Our Team?
             </h2>
             <p className="text-lg text-gro-gray mb-8 max-w-2xl mx-auto">
-              Take the next step in your early childhood education career and make a meaningful 
+              Take the next step in your early childhood education career and make a meaningful
               difference in the lives of children across Queensland's mining communities.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 onClick={handleApply}
                 disabled={applying}
-                variant="gro" 
+                variant="gro"
                 size="lg"
               >
                 {applying ? 'Processing...' : 'Apply for This Position'}
@@ -489,7 +488,7 @@ export default function JobDetailPage() {
           </div>
         </section>
       </main>
-      
+
       <Footer />
 
       {/* Application Modal */}

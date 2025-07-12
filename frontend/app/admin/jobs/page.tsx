@@ -1,24 +1,9 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { apiClient, isAuthenticated } from '@/lib/api';
-import type { Job } from '@/lib/api';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/Button';
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  Users, 
-  Search, 
-  Filter,
-  Calendar,
-  MapPin,
-  DollarSign,
+export default function AdminJobsPage() {
+  redirect('/jobs');
+}
+DollarSign,
   Briefcase
 } from 'lucide-react';
 import Link from 'next/link';
@@ -47,14 +32,14 @@ export default function AdminJobsPage() {
       router.push('/auth/login');
       return;
     }
-    
+
     fetchUserAndJobs();
   }, []);
 
   const fetchUserAndJobs = async () => {
     try {
       setLoading(true);
-      
+
       // Get user data first
       const userResponse = await apiClient.getCurrentUser();
       if (userResponse.status === 'success' && userResponse.data) {
@@ -78,7 +63,7 @@ export default function AdminJobsPage() {
   const fetchJobs = async () => {
     try {
       const response = await apiClient.getMyJobs(filters);
-      
+
       if (response.status === 'success' && response.data && response.data.jobs) {
         setJobs(Array.isArray(response.data.jobs) ? response.data.jobs : []);
       } else {
@@ -123,7 +108,7 @@ export default function AdminJobsPage() {
     try {
       const response = await apiClient.updateJobStatus(jobId, newStatus);
       if (response.status === 'success') {
-        setJobs(jobs.map(job => 
+        setJobs(jobs.map(job =>
           job._id === jobId ? { ...job, status: newStatus } : job
         ));
       } else {
@@ -136,11 +121,11 @@ export default function AdminJobsPage() {
 
   const formatSalary = (job: Job) => {
     if (!job?.salary?.showRange) return 'Competitive';
-    
+
     const { min, max, currency } = job.salary;
-    const formatAmount = (amount: number) => 
-      new Intl.NumberFormat('en-AU', { 
-        style: 'currency', 
+    const formatAmount = (amount: number) =>
+      new Intl.NumberFormat('en-AU', {
+        style: 'currency',
         currency: currency || 'AUD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
@@ -151,7 +136,7 @@ export default function AdminJobsPage() {
     } else if (min) {
       return `${formatAmount(min)}+`;
     }
-    
+
     return 'Competitive';
   };
 
@@ -177,10 +162,10 @@ export default function AdminJobsPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center justify-between">
@@ -215,7 +200,7 @@ export default function AdminJobsPage() {
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gro-teal focus:border-transparent"
                   />
                 </div>
-                
+
                 <select
                   value={filters.status}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
@@ -229,7 +214,7 @@ export default function AdminJobsPage() {
                   <option value="cancelled">Cancelled</option>
                   <option value="expired">Expired</option>
                 </select>
-                
+
                 <Button onClick={applyFilters} className="w-full" variant="secondary">
                   <Filter className="h-4 w-4 mr-2" />
                   Apply Filters
@@ -283,7 +268,7 @@ export default function AdminJobsPage() {
                             {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                           </span>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                           <div className="flex items-center text-sm text-gray-600">
                             <MapPin className="h-4 w-4 mr-2" />
@@ -338,7 +323,7 @@ export default function AdminJobsPage() {
                             <Users className="h-4 w-4" />
                           </Link>
                         </Button>
-                        
+
                         <Button
                           variant="secondary"
                           size="sm"
@@ -348,7 +333,7 @@ export default function AdminJobsPage() {
                             <Edit className="h-4 w-4" />
                           </Link>
                         </Button>
-                        
+
                         <Button
                           variant="secondary"
                           size="sm"
@@ -366,7 +351,7 @@ export default function AdminJobsPage() {
           )}
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

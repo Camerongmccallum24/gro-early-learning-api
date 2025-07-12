@@ -1,34 +1,69 @@
-'use client';
-
-import { useState } from 'react';
-import { apiClient } from '@/lib/api';
-import type { Application } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/Button';
-import { 
-  X, 
-  User as UserIcon,
-  Mail,
-  Phone,
-  Calendar,
-  MessageSquare,
-  Plus,
-  Send,
-  Video
-} from 'lucide-react';
+import { X, Info } from 'lucide-react';
 
 interface ApplicationDetailModalProps {
-  application: Application;
+  application: any;
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (updatedApplication: Application) => void;
+  onUpdate: () => void;
 }
 
-export default function ApplicationDetailModal({ 
-  application, 
-  isOpen, 
-  onClose, 
-  onUpdate 
+export default function ApplicationDetailModal({
+  application,
+  isOpen,
+  onClose,
+  onUpdate
+}: ApplicationDetailModalProps) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-xl font-bold text-gro-darkblue">
+            Application Details
+          </CardTitle>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="h-8 w-8 p-0"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </CardHeader>
+
+        <CardContent className="text-center py-8">
+          <Info className="h-16 w-16 text-gro-teal mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gro-darkblue mb-2">
+            Feature Not Available
+          </h3>
+          <p className="text-gro-gray mb-4">
+            Application management is not available in this version. Please contact us directly for application inquiries.
+          </p>
+          <Button
+            onClick={onClose}
+            className="bg-gro-orange hover:bg-gro-orange/90"
+          >
+            Close
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+application: Application;
+isOpen: boolean;
+onClose: () => void;
+onUpdate: (updatedApplication: Application) => void;
+}
+
+export default function ApplicationDetailModal({
+  application,
+  isOpen,
+  onClose,
+  onUpdate
 }: ApplicationDetailModalProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'notes' | 'interviews'>('overview');
   const [loading, setLoading] = useState(false);
@@ -41,7 +76,7 @@ export default function ApplicationDetailModal({
   const job = typeof application.job === 'object' ? application.job : null;
 
   const candidateInfo = {
-    name: candidate?.profile?.firstName && candidate?.profile?.lastName 
+    name: candidate?.profile?.firstName && candidate?.profile?.lastName
       ? `${candidate.profile.firstName} ${candidate.profile.lastName}`
       : 'Unknown Candidate',
     email: candidate?.email || 'No email',
@@ -49,7 +84,7 @@ export default function ApplicationDetailModal({
   };
 
   const formatStatus = (status: string) => {
-    return status.split('_').map(word => 
+    return status.split('_').map(word =>
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
   };
@@ -70,7 +105,7 @@ export default function ApplicationDetailModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        
+
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center gap-4">
@@ -94,31 +129,28 @@ export default function ApplicationDetailModal({
         <div className="flex border-b">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-6 py-3 font-medium transition-colors ${
-              activeTab === 'overview' 
-                ? 'text-gro-teal border-b-2 border-gro-teal' 
+            className={`px-6 py-3 font-medium transition-colors ${activeTab === 'overview'
+                ? 'text-gro-teal border-b-2 border-gro-teal'
                 : 'text-gray-600 hover:text-gray-900'
-            }`}
+              }`}
           >
             Overview
           </button>
           <button
             onClick={() => setActiveTab('notes')}
-            className={`px-6 py-3 font-medium transition-colors ${
-              activeTab === 'notes' 
-                ? 'text-gro-teal border-b-2 border-gro-teal' 
+            className={`px-6 py-3 font-medium transition-colors ${activeTab === 'notes'
+                ? 'text-gro-teal border-b-2 border-gro-teal'
                 : 'text-gray-600 hover:text-gray-900'
-            }`}
+              }`}
           >
             Notes ({application.notes?.length || 0})
           </button>
           <button
             onClick={() => setActiveTab('interviews')}
-            className={`px-6 py-3 font-medium transition-colors ${
-              activeTab === 'interviews' 
-                ? 'text-gro-teal border-b-2 border-gro-teal' 
+            className={`px-6 py-3 font-medium transition-colors ${activeTab === 'interviews'
+                ? 'text-gro-teal border-b-2 border-gro-teal'
                 : 'text-gray-600 hover:text-gray-900'
-            }`}
+              }`}
           >
             Interviews ({application.interviews?.length || 0})
           </button>
@@ -128,7 +160,7 @@ export default function ApplicationDetailModal({
         <div className="p-6">
           {activeTab === 'overview' && (
             <div className="space-y-6">
-              
+
               {/* Candidate Information */}
               <Card>
                 <CardHeader>
@@ -171,9 +203,9 @@ export default function ApplicationDetailModal({
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium text-gro-darkblue">Application Notes</h3>
-                <Button 
-                  onClick={() => setShowAddNote(true)} 
-                  variant="gro" 
+                <Button
+                  onClick={() => setShowAddNote(true)}
+                  variant="gro"
                   size="sm"
                 >
                   <Plus className="h-4 w-4 mr-2" />
@@ -192,7 +224,7 @@ export default function ApplicationDetailModal({
                         className="w-full h-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gro-teal focus:border-transparent resize-none"
                       />
                       <div className="flex items-center gap-3">
-                        <Button 
+                        <Button
                           onClick={async () => {
                             if (!newNote.trim()) return;
                             try {
@@ -215,12 +247,12 @@ export default function ApplicationDetailModal({
                           <Send className="h-4 w-4 mr-2" />
                           Add Note
                         </Button>
-                        <Button 
+                        <Button
                           onClick={() => {
                             setShowAddNote(false);
                             setNewNote('');
                           }}
-                          variant="secondary" 
+                          variant="secondary"
                           size="sm"
                         >
                           Cancel
